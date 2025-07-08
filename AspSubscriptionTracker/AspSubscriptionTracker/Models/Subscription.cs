@@ -1,35 +1,70 @@
-﻿namespace Models
+﻿using System.ComponentModel.DataAnnotations;
+using AspSubscriptionTracker.Validations;
+namespace Models
 {
     public class Subscription
     {
-        public Guid Id { get; set; }
-        public required string Name { get; set; }
-        public required double Price { get; set; }   
-        public required CategoryTypeEnum Category { get; set; }
-        public required RenewTypeEnum RenewalType { get; set; }
+        private const float maxPrice = 1000000;
 
-        private DateTime renewalDate;
-        public required DateTime RenewalDate 
+        [Required(AllowEmptyStrings = false, ErrorMessage = "{0} can not be null or empty.")]
+        [Display(Name = "Subscription Name")]
+        [StringLength(30, MinimumLength = 3, ErrorMessage = "Name must be between 3-30 characters")]
+        [AllowedValues(typeof(char), ErrorMessage = "{0} can not contains special characters")]
+        public string Name { get; set; }
+
+        [Required(ErrorMessage = "{0} can not be empty")]
+        [Display(Name = "Subscription Price")]
+        [Range(0, maxPrice, ErrorMessage = "Price must be between ${1} and ${2}")]
+        public double Price { get; set; }
+
+        [Required(ErrorMessage = "{0} can not be empty")]
+        [Display(Name = "Sign Up Email")]
+        [StringLength(maximumLength:30, ErrorMessage = "Name can not be longer than 30 characters")]
+        [EmailAddress]
+        public string Email {  get; set; }
+
+        //[Required]
+        public CategoryTypeEnum Category { get; set; }
+
+        //[Required]
+        public RenewTypeEnum RenewalType { get; set; }
+
+        private DateTime purchaseDate;
+
+        [Required]
+        [Display(Name = "Purchase Date")]
+        [RenewalTypeAndDateValidator(nameof(RenewalType))]
+        public DateTime PurchaseDate
         { 
-            get {  return renewalDate; } 
+            get {  return purchaseDate; } 
             set
             {
-                renewalDate = value.Date;
+                purchaseDate = value.Date;
 
                 switch (RenewalType)
                 {
-                    case RenewTypeEnum.Monthly: NextRenewalDate = renewalDate.AddMonths(1);
+                    case RenewTypeEnum.Monthly: NextRenewalDate = purchaseDate.AddMonths(1);
                         break;
-                    case RenewTypeEnum.Weekly: NextRenewalDate = renewalDate.AddDays(7);
+                    case RenewTypeEnum.Weekly: NextRenewalDate = purchaseDate.AddDays(7);
                         break;
-                    case RenewTypeEnum.Annual: NextRenewalDate = renewalDate.AddYears(1);
+                    case RenewTypeEnum.Annual: NextRenewalDate = purchaseDate.AddYears(1);
                         break;
                 }
             }
         }
-        
-        
+       
         public DateTime NextRenewalDate {  get; private set; }
-        public Subscription() { Id = Guid.NewGuid(); }
+        public Subscription() { }
+
+
+        public override string ToString()
+        {
+            return $"Name: {Name}\n" +
+                $"Price: {Price}\n" +
+                $"Email: {Email}\n" +
+                $"Catgory: {Category}\n" +
+                $"Renew Type: {RenewalType}\n" +
+                $"Renew Date: {PurchaseDate} \n";
+        }
     }
 }

@@ -1,7 +1,61 @@
-﻿@{
+﻿@model Subscription
+
+@{
 	ViewBag.Title = "Home Page";
 }
 
 <body>
-	<h1>This is the default</h1>
+	<h1>Subscription Tracker</h1>
+
+	<div class="container">
+		<form asp-action="CreateSubscription" method="post">
+			<div>
+				<label asp-for="Name">Subscription Name:</label>
+				<input type="text" asp-for="Name" placeholder="Subscription Name" />
+			</div>
+
+			<div>
+				<label asp-for="Price">Price:</label>
+				<input type="number" asp-for="Price" placeholder="Price" required />
+			</div>
+
+			<div>
+				<label asp-for="Email">Email</label>
+				<input type="email" asp-for="Email" required />
+			</div>
+
+			<div>
+				<label asp-for="RenewalType">Renewal Type</label>
+
+				<select asp-for="RenewalType">
+					@foreach (RenewTypeEnum item in Enum.GetValues(typeof(RenewTypeEnum)))
+					{
+						<option value="@item" label="@item" />
+					}
+
+				</select>
+
+			</div>
+
+			<div>
+				<label asp-for="Category">Category</label>
+
+				<select asp-for="Category">
+					@foreach (CategoryTypeEnum item in Enum.GetValues(typeof(CategoryTypeEnum)))
+					{
+						<option value="@item" label="@item"/>
+					}
+				</select>
+			</div>
+
+			<div>
+				<label asp-for="PurchaseDate">Purchase Date</label>
+				<input asp-for="PurchaseDate" type="date" required/>
+			</div>
+
+			<button type="reset">Clear</button>
+			<button type="submit">Submit</button>
+		</form>
+	</div>
+
 </body>
