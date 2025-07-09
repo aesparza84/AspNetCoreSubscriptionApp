@@ -5,9 +5,17 @@ namespace AspSubscriptionTracker.Controllers
 {
     public class HomeController : Controller
     {
+        [HttpGet]
+        [Route("/")]
+        public IActionResult Index()
+        {            
+            return View();
+        }
+
+        [HttpPost]
         [Route("/")]
         public IActionResult Index(Subscription sub)
-        {            
+        {
             return View();
         }
 
@@ -32,12 +40,10 @@ namespace AspSubscriptionTracker.Controllers
 
                 string errorMessahe = string.Join("\n", errors);
 
-                return BadRequest(errorMessahe);
+                return View("Index", sub);
             }
 
-            return Content($"{sub}");
-
-            return View("CreateView");
+            return View("CreateView", sub);
         }
 
         [Route("delete")]

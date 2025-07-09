@@ -9,7 +9,6 @@ namespace Models
         [Required(AllowEmptyStrings = false, ErrorMessage = "{0} can not be null or empty.")]
         [Display(Name = "Subscription Name")]
         [StringLength(30, MinimumLength = 3, ErrorMessage = "Name must be between 3-30 characters")]
-        [AllowedValues(typeof(char), ErrorMessage = "{0} can not contains special characters")]
         public string Name { get; set; }
 
         [Required(ErrorMessage = "{0} can not be empty")]

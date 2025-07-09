@@ -1,8 +1,21 @@
-﻿@{
+﻿@model Subscription
+@{
 	ViewBag.Title = "Create Page";
 }
 
 
 <body>
-	<h1>This is the create View</h1>
+	<h1>Added Subscription</h1>
+
+	<div class="bg-gradient container">
+		<ul>
+			<li>@Model.Name</li>
+			<li>@Model.Price</li>
+			<li>@Model.Category</li>
+			<li>@Model.RenewalType</li>
+			<li>@Model.PurchaseDate</li>
+			<li>@Model.NextRenewalDate</li>
+		</ul>
+	</div>
+
 </body>

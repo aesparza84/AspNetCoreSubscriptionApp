@@ -9,19 +9,27 @@
 
 	<div class="container">
 		<form asp-action="CreateSubscription" method="post">
+
+			<div asp-validation-summary="All" class="text-bg-danger">
+
+			</div>
+
 			<div>
 				<label asp-for="Name">Subscription Name:</label>
 				<input type="text" asp-for="Name" placeholder="Subscription Name" />
+				<span asp-validation-for="Name" />
 			</div>
 
 			<div>
 				<label asp-for="Price">Price:</label>
-				<input type="number" asp-for="Price" placeholder="Price" required />
+				<input type="text" asp-for="Price" placeholder="Price" required />
+				<span asp-validation-for="Price" />
 			</div>
 
 			<div>
 				<label asp-for="Email">Email</label>
 				<input type="email" asp-for="Email" required />
+				<span asp-validation-for="Email"/>
 			</div>
 
 			<div>
@@ -51,6 +59,7 @@
 			<div>
 				<label asp-for="PurchaseDate">Purchase Date</label>
 				<input asp-for="PurchaseDate" type="date" required/>
+				<span asp-validation-for="PurchaseDate" />
 			</div>
 
 			<button type="reset">Clear</button>
