@@ -1,3 +1,9 @@
+using AspSubscriptionTracker.Models;
+using AspSubscriptionTracker.Services.Contracts;
+using AspSubscriptionTracker.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+
 namespace AspSubscriptionTracker
 {
     public class Program
@@ -8,7 +14,22 @@ namespace AspSubscriptionTracker
             
             //Add Controllers
             builder.Services.AddControllersWithViews();
-            
+
+            //Add injection
+            builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();
+
+            //Add the dbContext
+            builder.Services.AddDbContext<SubscriptionContext>(options => 
+            {
+                //options.UseSqlServer("Server=MACHACITO;Database=SubscriptionDB;Trusted_Connection=True;TrustServerCertificate=True");
+
+                options.EnableDetailedErrors();
+
+                string connection = builder.Configuration.GetConnectionString("DefaultConnection");
+                connection = "Server=(localdb)/MSSQLLocalDB;Database=SubscriptionsDb;Trusted_Connection=True;TrustServerCertificate=True;";
+                options.UseSqlServer(connection);
+            });
+
             var app = builder.Build();
 
             //Enable the components

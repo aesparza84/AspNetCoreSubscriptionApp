@@ -6,6 +6,8 @@ namespace Models
     {
         private const float maxPrice = 1000000;
 
+        public Guid Id { get; private set; }
+
         [Required(AllowEmptyStrings = false, ErrorMessage = "{0} can not be null or empty.")]
         [Display(Name = "Subscription Name")]
         [StringLength(30, MinimumLength = 3, ErrorMessage = "Name must be between 3-30 characters")]
@@ -53,7 +55,7 @@ namespace Models
         }
        
         public DateTime NextRenewalDate {  get; private set; }
-        public Subscription() { }
+        public Subscription() { Id = Guid.NewGuid(); }
 
 
         public override string ToString()

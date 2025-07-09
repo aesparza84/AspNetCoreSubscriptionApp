@@ -1,14 +1,24 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Diagnostics;
+using AspSubscriptionTracker.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 using Models;
 
 namespace AspSubscriptionTracker.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly ISubscriptionService subService;
+
+        public HomeController(ISubscriptionService sub)
+        {
+            subService = sub;
+        }
+
         [HttpGet]
         [Route("/")]
         public IActionResult Index()
         {            
+            Console.WriteLine("Loaeded index");
             return View();
         }
 
@@ -21,7 +31,7 @@ namespace AspSubscriptionTracker.Controllers
 
         [HttpPost]
         [Route("create")]
-        public IActionResult CreateSubscription(Subscription sub)
+        public async Task<IActionResult> CreateSubscription(Subscription sub)
         {
             //Bring to Create View (input fields)
             //Accept input and create Sub Model
@@ -42,6 +52,10 @@ namespace AspSubscriptionTracker.Controllers
 
                 return View("Index", sub);
             }
+
+            Console.WriteLine("Added a new subscription to DB", ConsoleColor.Blue);
+            
+            await subService.AddAsync(sub);
 
             return View("CreateView", sub);
         }

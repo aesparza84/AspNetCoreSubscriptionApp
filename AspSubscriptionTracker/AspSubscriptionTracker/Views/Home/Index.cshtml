@@ -5,9 +5,12 @@
 }
 
 <body>
+	<div class="container bg-danger-subtle">
 	<h1>Subscription Tracker</h1>
 
-	<div class="container">
+	</div>
+
+	<div class="container bg-dark-subtle">
 		<form asp-action="CreateSubscription" method="post">
 
 			<div asp-validation-summary="All" class="text-bg-danger">
@@ -65,6 +68,13 @@
 			<button type="reset">Clear</button>
 			<button type="submit">Submit</button>
 		</form>
+	</div>
+
+	@* 1st way of calling *@
+	
+	<div id="display-box" class="container bg-success-subtle">
+
+		@await Component.InvokeAsync("AllSubscriptions")
 	</div>
 
 </body>
