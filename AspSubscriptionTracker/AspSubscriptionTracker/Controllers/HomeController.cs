@@ -12,6 +12,9 @@ namespace AspSubscriptionTracker.Controllers
         public HomeController(ISubscriptionService sub)
         {
             subService = sub;
+
+            if (subService == null)
+                Console.WriteLine("Service is null");
         }
 
         [HttpGet]
@@ -53,9 +56,11 @@ namespace AspSubscriptionTracker.Controllers
                 return View("Index", sub);
             }
 
-            Console.WriteLine("Added a new subscription to DB", ConsoleColor.Blue);
+            Console.WriteLine("Added a new subscription to DB");
             
-            await subService.AddAsync(sub);
+            await subService.AddSubAsync(sub);
+
+            Console.WriteLine("made it after the await");
 
             return View("CreateView", sub);
         }

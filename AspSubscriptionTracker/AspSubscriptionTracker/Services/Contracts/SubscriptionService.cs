@@ -12,10 +12,13 @@ namespace AspSubscriptionTracker.Services.Contracts
         public SubscriptionService(SubscriptionContext ctx)
         {
             subContext = ctx;
+
+            if (subContext == null)
+                Console.WriteLine("subContext is null");
         }
-        public async Task AddAsync(Subscription sub)
+        public async Task AddSubAsync(Subscription sub)
         {
-            subContext.Add(sub);
+            await subContext.AddAsync(sub);
             await subContext.SaveChangesAsync();
         }
 
