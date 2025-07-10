@@ -12,62 +12,52 @@ namespace AspSubscriptionTracker.Controllers
         public HomeController(ISubscriptionService sub)
         {
             subService = sub;
-
-            if (subService == null)
-                Console.WriteLine("Service is null");
         }
 
         [HttpGet]
         [Route("/")]
-        public IActionResult Index()
-        {            
-            Console.WriteLine("Loaeded index");
+        public async Task<IActionResult> Index()
+        {
+            List<Subscription> list = await subService.ViewAllAsync();
+            
+            if (list != null)
+                return View(list);
+                
             return View();
         }
 
-        [HttpPost]
-        [Route("/")]
-        public IActionResult Index(Subscription sub)
+        [HttpGet]
+        [Route("create")]
+        public IActionResult Create()
         {
-            return View();
+            return View("CreateView");
         }
 
         [HttpPost]
         [Route("create")]
-        public async Task<IActionResult> CreateSubscription(Subscription sub)
+        public async Task<IActionResult> Create(Subscription sub)
         {
-            //Bring to Create View (input fields)
-            //Accept input and create Sub Model
-
             if (!ModelState.IsValid)
             {
-                List<string> errors = new List<string>();
-
-                foreach (var item in ModelState.Values)
-                {
-                    foreach (var prop in item.Errors)
-                    {
-                        errors.Add(prop.ErrorMessage);
-                    }
-                }
-
-                string errorMessahe = string.Join("\n", errors);
-
-                return View("Index", sub);
+                return View("CreateView", sub);
             }
 
-            Console.WriteLine("Added a new subscription to DB");
+            //Service Interaction
+            bool added = await subService.AddSubAsync(sub);
             
-            await subService.AddSubAsync(sub);
+            if (!added)
+            {
+                ModelState.AddModelError(string.Empty, $"Subscription already assocatiated with email {sub.Email}");
+                return View("CreateView", sub);
+            }
 
-            Console.WriteLine("made it after the await");
-
-            return View("CreateView", sub);
+            return RedirectToAction("Index"); 
         }
 
         [Route("delete")]
         public IActionResult DeleteSubscription()
         {
+            //Nothing calls this yet
             return View("DeleteView");
         }
     }

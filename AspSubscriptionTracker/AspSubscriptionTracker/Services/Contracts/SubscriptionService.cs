@@ -12,17 +12,26 @@ namespace AspSubscriptionTracker.Services.Contracts
         public SubscriptionService(SubscriptionContext ctx)
         {
             subContext = ctx;
-
-            if (subContext == null)
-                Console.WriteLine("subContext is null");
         }
-        public async Task AddSubAsync(Subscription sub)
+        public async Task<bool> AddSubAsync(Subscription sub)
         {
+            List<Subscription> subList = subContext.Subscriptions.ToList();
+            
+            if (subList.Any(e => e.Name == sub.Name && e.Email == sub.Email))
+            {
+                Console.WriteLine("This subscription exists on this email");
+                return false;
+            }
+
+
             await subContext.AddAsync(sub);
             await subContext.SaveChangesAsync();
+            
+            Console.WriteLine("Sub is valid, Added");
+            return true;
         }
 
-        public async Task<List<Subscription>> ViewAllAsync()
+        public async Task<List<Subscription>>? ViewAllAsync()
         {
             List<Subscription> list = await subContext.Subscriptions.ToListAsync();
 

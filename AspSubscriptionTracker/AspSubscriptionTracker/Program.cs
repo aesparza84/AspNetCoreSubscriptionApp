@@ -26,8 +26,6 @@ namespace AspSubscriptionTracker
                 options.EnableDetailedErrors();
 
                 string connection = builder.Configuration.GetConnectionString("DefaultConnection");
-                string connectionA = "Server=(localdb)\\MSSQLLocalDB;Database=SubscriptionsDb;Trusted_Connection=True;TrustServerCertificate=True;";
-                string connectionB = "Server=MACHACITO;Database=SubscriptionDB;Trusted_Connection=True;TrustServerCertificate=True;";
                 options.UseSqlServer(connection);
             });
 

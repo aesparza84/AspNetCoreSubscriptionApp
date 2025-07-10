@@ -1,21 +1,75 @@
 ﻿@model Subscription
+
 @{
-	ViewBag.Title = "Create Page";
+	ViewBag.Title = "Home Page";
 }
 
-
 <body>
-	<h1>Added Subscription</h1>
+	<div class="container bg-danger-subtle">
+		<h1>Subscription Tracker</h1>
 
-	<div class="bg-gradient container">
-		<ul>
-			<li>@Model.Name</li>
-			<li>@Model.Price</li>
-			<li>@Model.Category</li>
-			<li>@Model.RenewalType</li>
-			<li>@Model.PurchaseDate</li>
-			<li>@Model.NextRenewalDate</li>
-		</ul>
 	</div>
 
+	<div class="navbar">
+		<a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
+	</div>
+
+	<div class="container bg-dark-subtle">
+		<form asp-action="CreateSubscription" method="post">
+
+			<div asp-validation-summary="All" class="text-bg-danger">
+			</div>
+
+			<div>
+				<label asp-for="Name">Subscription Name:</label>
+				<input type="text" asp-for="Name" placeholder="Subscription Name" />
+				<span asp-validation-for="Name" />
+			</div>
+
+			<div>
+				<label asp-for="Price">Price:</label>
+				<input type="text" asp-for="Price" placeholder="Price" required />
+				<span asp-validation-for="Price" />
+			</div>
+
+			<div>
+				<label asp-for="Email">Email</label>
+				<input type="email" asp-for="Email" required />
+				<span asp-validation-for="Email" />
+			</div>
+
+			<div>
+				<label asp-for="RenewalType">Renewal Type</label>
+
+				<select asp-for="RenewalType">
+					@foreach (RenewTypeEnum item in Enum.GetValues(typeof(RenewTypeEnum)))
+					{
+						<option value="@item" label="@item" />
+					}
+
+				</select>
+
+			</div>
+
+			<div>
+				<label asp-for="Category">Category</label>
+
+				<select asp-for="Category">
+					@foreach (CategoryTypeEnum item in Enum.GetValues(typeof(CategoryTypeEnum)))
+					{
+						<option value="@item" label="@item" />
+					}
+				</select>
+			</div>
+
+			<div>
+				<label asp-for="PurchaseDate">Purchase Date</label>
+				<input asp-for="PurchaseDate" type="date" required />
+				<span asp-validation-for="PurchaseDate" />
+			</div>
+
+			<button type="reset">Clear</button>
+			<button type="submit">Submit</button>
+		</form>
+	</div>
 </body>
