@@ -5,71 +5,77 @@
 }
 
 <body>
-	<div class="container bg-danger-subtle">
-		<h1>Subscription Tracker</h1>
-
+	<div class="container-md">
+		<h1>Add Subscription</h1>
 	</div>
 
-	<div class="navbar">
-		<a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
-	</div>
 
-	<div class="container bg-dark-subtle">
-		<form asp-action="CreateSubscription" method="post">
+	<div class="container">
+		<div>
+			<div class="col-md-6 justify-content-center">
 
-			<div asp-validation-summary="All" class="text-bg-danger">
+			<div class="col-md-6">
+				<a class="btn btn-primary" asp-controller="Home" asp-action="Index">Cancel</a>
 			</div>
 
-			<div>
-				<label asp-for="Name">Subscription Name:</label>
-				<input type="text" asp-for="Name" placeholder="Subscription Name" />
-				<span asp-validation-for="Name" />
-			</div>
+			<form asp-action="CreateSubscription" method="post">
 
-			<div>
-				<label asp-for="Price">Price:</label>
-				<input type="text" asp-for="Price" placeholder="Price" required />
-				<span asp-validation-for="Price" />
-			</div>
+				<div asp-validation-summary="All" class="text-bg-danger">
 
-			<div>
-				<label asp-for="Email">Email</label>
-				<input type="email" asp-for="Email" required />
-				<span asp-validation-for="Email" />
-			</div>
+				</div>
 
-			<div>
-				<label asp-for="RenewalType">Renewal Type</label>
+				<div class="mb-3">
+					<label class="form-label" asp-for="Name">Subscription Name:</label>
+					<input class="form-control" type="text" asp-for="Name" placeholder="Subscription Name" />
+					<span asp-validation-for="Name" />
+				</div>
 
-				<select asp-for="RenewalType">
-					@foreach (RenewTypeEnum item in Enum.GetValues(typeof(RenewTypeEnum)))
-					{
-						<option value="@item" label="@item" />
-					}
+				<div class="mb-3">
+					<label class="form-label" asp-for="Price">Price:</label>
+					<input class="form-control" type="text" asp-for="Price" placeholder="Price" required />
+					<span asp-validation-for="Price" />
+				</div>
 
-				</select>
+				<div class="mb-3">
+					<label class="form-label" asp-for="Email">Email</label>
+					<input class="form-control" type="email" asp-for="Email" placeholder="email@Domain.com" required />
+					<span asp-validation-for="Email" />
+				</div>
 
-			</div>
+				<div class="mb-3">
+					<label class="form-label" asp-for="RenewalType">Renewal Type</label>
 
-			<div>
-				<label asp-for="Category">Category</label>
+					<select class="form-control" asp-for="RenewalType">
+						@foreach (RenewTypeEnum item in Enum.GetValues(typeof(RenewTypeEnum)))
+						{
+							<option value="@item" label="@item" />
+						}
 
-				<select asp-for="Category">
-					@foreach (CategoryTypeEnum item in Enum.GetValues(typeof(CategoryTypeEnum)))
-					{
-						<option value="@item" label="@item" />
-					}
-				</select>
-			</div>
+					</select>
 
-			<div>
-				<label asp-for="PurchaseDate">Purchase Date</label>
-				<input asp-for="PurchaseDate" type="date" required />
-				<span asp-validation-for="PurchaseDate" />
-			</div>
+				</div>
 
-			<button type="reset">Clear</button>
-			<button type="submit">Submit</button>
-		</form>
+				<div class="mb-3">
+					<label class="form-label" asp-for="Category">Category</label>
+
+					<select class="form-select" asp-for="Category">
+						@foreach (CategoryTypeEnum item in Enum.GetValues(typeof(CategoryTypeEnum)))
+						{
+							<option value="@item" label="@item" />
+						}
+					</select>
+				</div>
+
+				<div class="mb-3">
+					<label class="form-label" asp-for="PurchaseDate">Purchase Date</label>
+					<input class="form-control" asp-for="PurchaseDate" type="date" required />
+					<span asp-validation-for="PurchaseDate" />
+				</div>
+
+				<button type="reset">Clear</button>
+				<button type="submit">Submit</button>
+			</form>
+		</div>
+		</div>
 	</div>
 </body>

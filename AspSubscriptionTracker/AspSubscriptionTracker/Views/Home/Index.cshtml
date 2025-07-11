@@ -4,41 +4,46 @@
 	ViewBag.Title = "Home Page";
 }
 
-<body>
-	<div class="navbar">
-		<a class="nav-link" asp-controller="Home" asp-action="Create">Create</a>
+<body class="container-md">
+	<div class="col-md-6">
+		<a class="btn btn-primary" asp-controller="Home" asp-action="Create">Create</a>
+		<a class="btn btn-secondary" asp-controller="Home" asp-action="Create">Delete</a>
 	</div>
 
 	<div id="sub-list-display">
 		@if (Model != null)
 		{
 			<table id="dispaly-table" class="table table-striped table-hover">
-				<tr>
-					<th>Name</th>
-					<th>Price</th>
-					<th>Email</th>
-					<th>Category</th>
-					<th>Renew Type</th>
-					<th>Purchase Date</th>
-					<th>Renew Date</th>
-				</tr>
-
-				@foreach (Subscription sub in Model)
-				{
-					<tr id="data-row">
-						<td style="display: none">@sub.Id</td>
-						<td>@sub.Name</td>
-						<td>@sub.Price.ToString("C")</td>
-						<td>@sub.Email</td>
-						<td>@sub.Category.ToString()</td>
-						<td>@sub.RenewalType.ToString()</td>
-						<td>@String.Format("{0:MM/dd/yyyy}", sub.PurchaseDate)</td>
-						<td>@String.Format("{0:MM/dd/yyyy}", sub.NextRenewalDate)</td>
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Price</th>
+						<th>Email</th>
+						<th>Category</th>
+						<th>Renew Type</th>
+						<th>Purchase Date</th>
+						<th>Renew Date</th>
 					</tr>
-				}
+				</thead>
+
+				<tbody>
+					@foreach (Subscription sub in Model)
+					{
+						<tr id="data-row">
+							<td style="display: none">@sub.Id</td>
+							<td>@sub.Name</td>
+							<td>@sub.Price.ToString("C")</td>
+							<td>@sub.Email</td>
+							<td>@sub.Category.ToString()</td>
+							<td>@sub.RenewalType.ToString()</td>
+							<td>@String.Format("{0:MM/dd/yyyy}", sub.PurchaseDate)</td>
+							<td>@String.Format("{0:MM/dd/yyyy}", sub.NextRenewalDate)</td>
+						</tr>
+					}
+				</tbody>
+
 			</table>
 		}
-
 	</div>
 
 	<script>
