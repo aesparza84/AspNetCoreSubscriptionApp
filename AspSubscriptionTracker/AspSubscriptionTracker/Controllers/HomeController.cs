@@ -50,7 +50,7 @@ namespace AspSubscriptionTracker.Controllers
                 ModelState.AddModelError(string.Empty, $"Subscription already assocatiated with email {sub.Email}");
                 return View("CreateView", sub);
             }
-
+          
             return RedirectToAction("Index"); 
         }
 

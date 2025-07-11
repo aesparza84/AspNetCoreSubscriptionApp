@@ -10,18 +10,45 @@
 	</div>
 
 	<div id="sub-list-display">
+		@if (Model != null)
+		{
+			<table id="dispaly-table" class="table table-striped table-hover">
+				<tr>
+					<th>Name</th>
+					<th>Price</th>
+					<th>Email</th>
+					<th>Category</th>
+					<th>Renew Type</th>
+					<th>Purchase Date</th>
+					<th>Renew Date</th>
+				</tr>
+
+				@foreach (Subscription sub in Model)
+				{
+					<tr id="data-row">
+						<td style="display: none">@sub.Id</td>
+						<td>@sub.Name</td>
+						<td>@sub.Price.ToString("C")</td>
+						<td>@sub.Email</td>
+						<td>@sub.Category.ToString()</td>
+						<td>@sub.RenewalType.ToString()</td>
+						<td>@String.Format("{0:MM/dd/yyyy}", sub.PurchaseDate)</td>
+						<td>@String.Format("{0:MM/dd/yyyy}", sub.NextRenewalDate)</td>
+					</tr>
+				}
+			</table>
+		}
 
 	</div>
 
-	@if (Model != null)
-	{
-		<ul>
-			@foreach (Subscription item in Model)
-			{
-				<li>@item.Name | @item.Price | @item.Email | @item.Category
-					@item.RenewalType | @item.PurchaseDate | @item.NextRenewalDate</li>
-			}
-		</ul>
-	}
+	<script>
+		document.querySelectorAll('#data-row').forEach(item => {
+			item.addEventListener('click', () => {
+				let row = item;
+				let val = row.cells[0].textContent;
+				console.log(val);
+			});
+		});
+	</script>
 
 </body>
