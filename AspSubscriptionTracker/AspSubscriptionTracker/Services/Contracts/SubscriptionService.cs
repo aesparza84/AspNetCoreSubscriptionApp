@@ -42,7 +42,7 @@ namespace AspSubscriptionTracker.Services.Contracts
         public bool Update(Subscription sub)
         {   
             //Grab the element we are updating
-            var dbSub = subContext.Subscriptions.FirstOrDefault(sub => sub.Id == sub.Id);
+            var dbSub = subContext.Subscriptions.FirstOrDefault(d => d.Id == sub.Id);
 
             //Email Changed
             if (sub.Email != dbSub.Email)
@@ -74,7 +74,7 @@ namespace AspSubscriptionTracker.Services.Contracts
             }
              
             //subContext.Entry(dbSub).State = EntityState.Modified;
-            subContext.Update(dbSub);
+            subContext.Subscriptions.Update(dbSub);
             subContext.SaveChanges();
             return true;
         }

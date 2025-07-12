@@ -112,5 +112,155 @@ namespace ServiceTests
             //Assert
             Assert.NotNull(requestSub);
         }
+
+        [Fact]
+        public async Task GetSubById_InvalidId()
+        {
+            //Arrange                  
+            Subscription testSub = new Subscription()
+            {
+                Name = "Test",
+                Price = 10,
+                Email = "test@gmail.com",
+                Category = CategoryTypeEnum.Streaming,
+                RenewalType = RenewTypeEnum.Monthly,
+                PurchaseDate = DateTime.Now
+            };
+
+
+            //Act 
+            Guid id = Guid.NewGuid();
+
+            Subscription requestSub = await subService.FindAsync(id);
+
+            //Assert
+            Assert.Null(requestSub);
+        }
+
+        [Fact]
+        public async void UpdateSusbcription_NameChange()
+        {
+            //Arrange                  
+            Subscription testSub = new Subscription()
+            {
+                Name = "Test",
+                Price = 10,
+                Email = "test@gmail.com",
+                Category = CategoryTypeEnum.Streaming,
+                RenewalType = RenewTypeEnum.Monthly,
+                PurchaseDate = DateTime.Now
+            };
+
+            //Act 
+            Guid id = await subService.AddSubAsync(testSub);
+
+            Subscription incomingSub = new Subscription()
+            {
+                Id = id,
+                Name = "DifferentName",
+                Price = 10,
+                Email = "test@gmail.com",
+                Category = CategoryTypeEnum.Streaming,
+                RenewalType = RenewTypeEnum.Monthly,
+                PurchaseDate = DateTime.Now
+            };
+
+            bool updated = subService.Update(incomingSub);
+
+            //Assert
+            Assert.True(updated);
+        }
+
+        [Fact]
+        public async void UpdateSusbcription_UpdatedEmailIsntUsedWithThisSuscriptionYet()
+        {
+            //Arrange                  
+            Subscription firstSub = new Subscription()
+            {
+                Name = "Test",
+                Price = 10,
+                Email = "test@gmail.com",
+                Category = CategoryTypeEnum.Streaming,
+                RenewalType = RenewTypeEnum.Monthly,
+                PurchaseDate = DateTime.Now
+            };
+
+            Subscription secondSub = new Subscription()
+            {
+                Name = "Ooboo",
+                Price = 10,
+                Email = "WaWa@gmail.com",
+                Category = CategoryTypeEnum.Streaming,
+                RenewalType = RenewTypeEnum.Monthly,
+                PurchaseDate = DateTime.Now
+            };
+
+            //Act 
+            await subService.AddSubAsync(firstSub);
+            Guid id = await subService.AddSubAsync(secondSub);
+
+                //We are changing the 2nd subscription email to test@gmail.com
+            Subscription incomingSub = new Subscription()
+            {
+                Id = id,
+                Name = "Ooboo",
+                Price = 10,
+                Email = "test@gmail.com",
+                Category = CategoryTypeEnum.Streaming,
+                RenewalType = RenewTypeEnum.Monthly,
+                PurchaseDate = DateTime.Now
+            };
+
+            bool updated = subService.Update(incomingSub);
+
+            //Assert
+            Assert.True(updated);
+        }
+
+        [Fact]
+        public async void UpdateSusbcription_UpdatedEmailAlreadyUsedWithThisSubsctiption()
+        {
+            //Arrange                  
+            Subscription firstSub = new Subscription()
+            {
+                Name = "Test",
+                Price = 10,
+                Email = "test@gmail.com",
+                Category = CategoryTypeEnum.Streaming,
+                RenewalType = RenewTypeEnum.Monthly,
+                PurchaseDate = DateTime.Now
+            };
+
+            Subscription secondSub = new Subscription()
+            {
+                Name = "Test",
+                Price = 10,
+                Email = "WaWa@gmail.com",
+                Category = CategoryTypeEnum.Streaming,
+                RenewalType = RenewTypeEnum.Monthly,
+                PurchaseDate = DateTime.Now
+            };
+
+            //Act 
+            await subService.AddSubAsync(firstSub);
+            Guid id = await subService.AddSubAsync(secondSub);
+
+            //We are changing the 2nd subscription email to test@gmail.com
+            Subscription incomingSub = new Subscription()
+            {
+                Id = id,
+                Name = "Test",
+                Price = 10,
+                Email = "test@gmail.com",
+                Category = CategoryTypeEnum.Streaming,
+                RenewalType = RenewTypeEnum.Monthly,
+                PurchaseDate = DateTime.Now
+            };
+
+            bool updated = subService.Update(incomingSub);
+
+            //Assert
+            Assert.False(updated);
+        }
     }
 }
