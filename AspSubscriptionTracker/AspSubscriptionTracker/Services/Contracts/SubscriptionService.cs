@@ -70,7 +70,8 @@ namespace AspSubscriptionTracker.Services.Contracts
                 dbSub.SetNextRenewalDate();
             }
              
-            subContext.Entry(dbSub).State = EntityState.Modified;
+            //subContext.Entry(dbSub).State = EntityState.Modified;
+            subContext.Update(dbSub);
             subContext.SaveChanges();
             return true;
         }
