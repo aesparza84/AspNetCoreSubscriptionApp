@@ -19,7 +19,7 @@ namespace AspSubscriptionTracker
             builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();
 
             //Add the dbContext
-            builder.Services.AddDbContext<SubscriptionContext>(options => 
+            builder.Services.AddDbContext<ApplicationDbContext>(options => 
             {
                 //options.UseSqlServer("Server=MACHACITO;Database=SubscriptionDB;Trusted_Connection=True;TrustServerCertificate=True");
 

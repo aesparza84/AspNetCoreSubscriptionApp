@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AspSubscriptionTracker.Migrations
 {
-    [DbContext(typeof(SubscriptionContext))]
+    [DbContext(typeof(ApplicationDbContext))]
     [Migration("20250709192201_InitialCreate")]
     partial class InitialCreate
     {

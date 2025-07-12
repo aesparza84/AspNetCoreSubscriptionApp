@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AspSubscriptionTracker.Migrations
 {
-    [DbContext(typeof(SubscriptionContext))]
+    [DbContext(typeof(ApplicationDbContext))]
     partial class SubscriptionContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

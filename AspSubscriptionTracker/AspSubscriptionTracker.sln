@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35707.178 d17.12
+VisualStudioVersion = 17.12.35707.178
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspSubscriptionTracker", "AspSubscriptionTracker\AspSubscriptionTracker.csproj", "{7A4D9D9F-EC9C-42B5-A614-C168F7B1728F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceTests", "ServiceTests\ServiceTests.csproj", "{FC0BE923-BFF3-47D1-87E6-737EF8359620}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{7A4D9D9F-EC9C-42B5-A614-C168F7B1728F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7A4D9D9F-EC9C-42B5-A614-C168F7B1728F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7A4D9D9F-EC9C-42B5-A614-C168F7B1728F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC0BE923-BFF3-47D1-87E6-737EF8359620}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC0BE923-BFF3-47D1-87E6-737EF8359620}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC0BE923-BFF3-47D1-87E6-737EF8359620}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC0BE923-BFF3-47D1-87E6-737EF8359620}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

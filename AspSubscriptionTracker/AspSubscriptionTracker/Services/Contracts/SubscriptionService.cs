@@ -7,9 +7,9 @@ namespace AspSubscriptionTracker.Services.Contracts
 {
     public class SubscriptionService : ISubscriptionService
     {
-        private readonly SubscriptionContext subContext;
+        private readonly ApplicationDbContext subContext;
 
-        public SubscriptionService(SubscriptionContext ctx)
+        public SubscriptionService(ApplicationDbContext ctx)
         {
             subContext = ctx;
         }
@@ -24,9 +24,11 @@ namespace AspSubscriptionTracker.Services.Contracts
             }
 
 
-            await subContext.AddAsync(sub);
+            //await subContext.AddAsync(sub);
+            await subContext.Subscriptions.AddAsync(sub);
             await subContext.SaveChangesAsync();
-            
+
+            int count = subContext.Subscriptions.Count();
             Console.WriteLine("Sub is valid, Added");
             return true;
         }
