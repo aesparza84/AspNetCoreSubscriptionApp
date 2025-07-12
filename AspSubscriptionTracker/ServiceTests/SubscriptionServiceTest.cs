@@ -50,10 +50,10 @@ namespace ServiceTests
             };
 
             //Act 
-            bool added = await subService.AddSubAsync(testSub);
+            Guid returnedId = await subService.AddSubAsync(testSub);
 
             //Assert
-            Assert.True(added);
+            Assert.NotEqual(Guid.Empty, returnedId);
         }
 
         [Fact]
@@ -81,12 +81,36 @@ namespace ServiceTests
             };
 
             //Act 
-            bool first = await subService.AddSubAsync(testSub);
-            bool second = await subService.AddSubAsync(testSubTwo);
+            Guid first = await subService.AddSubAsync(testSub);
+            Guid second = await subService.AddSubAsync(testSubTwo);
 
             //Assert
-            Assert.True(first);
-            Assert.False(second);
+            Assert.NotEqual(Guid.Empty, first);
+            Assert.Equal(Guid.Empty, second);
+        }
+
+        [Fact]
+        public async Task GetSubById_ValidId()
+        {
+            //Arrange                  
+            Subscription testSub = new Subscription()
+            {
+                Name = "Test",
+                Price = 10,
+                Email = "test@gmail.com",
+                Category = CategoryTypeEnum.Streaming,
+                RenewalType = RenewTypeEnum.Monthly,
+                PurchaseDate = DateTime.Now
+            };
+
+            
+            //Act 
+            Guid id = await subService.AddSubAsync(testSub);
+
+            Subscription requestSub = await subService.FindAsync(id);
+
+            //Assert
+            Assert.NotNull(requestSub);
         }
     }
 }

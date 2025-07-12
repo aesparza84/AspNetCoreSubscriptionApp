@@ -13,28 +13,29 @@ namespace AspSubscriptionTracker.Services.Contracts
         {
             subContext = ctx;
         }
-        public async Task<bool> AddSubAsync(Subscription sub)
+        public async Task<Guid> AddSubAsync(Subscription sub)
         {
             List<Subscription> subList = subContext.Subscriptions.ToList();
             
             if (subList.Any(e => e.Name == sub.Name && e.Email == sub.Email))
             {
                 Console.WriteLine("This subscription exists on this email");
-                return false;
+                return Guid.Empty;
             }
-
 
             //await subContext.AddAsync(sub);
             await subContext.Subscriptions.AddAsync(sub);
             await subContext.SaveChangesAsync();
 
-            int count = subContext.Subscriptions.Count();
+
             Console.WriteLine("Sub is valid, Added");
-            return true;
+            return sub.Id;
         }
 
         public async Task<Subscription>? FindAsync(Guid? id)
         {
+            int count = subContext.Subscriptions.Count();
+
             return await subContext.Subscriptions.FirstOrDefaultAsync(sub => sub.Id == id);
         }
 

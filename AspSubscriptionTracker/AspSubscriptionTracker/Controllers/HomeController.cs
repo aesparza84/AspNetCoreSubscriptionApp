@@ -45,9 +45,9 @@ namespace AspSubscriptionTracker.Controllers
             }
 
             //Service Interaction
-            bool added = await subService.AddSubAsync(sub);
+            Guid addedId = await subService.AddSubAsync(sub);
             
-            if (!added)
+            if (addedId != Guid.Empty)
             {
                 ModelState.AddModelError(string.Empty, $"Subscription already assocatiated with email {sub.Email}");
                 return View("CreateView", sub);
