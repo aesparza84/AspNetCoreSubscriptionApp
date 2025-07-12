@@ -38,6 +38,11 @@
 							<td>@sub.RenewalType.ToString()</td>
 							<td>@String.Format("{0:MM/dd/yyyy}", sub.PurchaseDate)</td>
 							<td>@String.Format("{0:MM/dd/yyyy}", sub.NextRenewalDate)</td>
+							<td>
+								<div class="btn-group">
+									<a asp-action="Edit" asp-route-subId="@sub.Id">Edit</a>
+								</div>
+							</td>
 						</tr>
 					}
 				</tbody>

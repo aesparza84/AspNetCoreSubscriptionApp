@@ -26,6 +26,7 @@ namespace AspSubscriptionTracker.Controllers
             return View();
         }
 
+        //GET, entering the page
         [HttpGet]
         [Route("create")]
         public IActionResult Create()
@@ -33,6 +34,7 @@ namespace AspSubscriptionTracker.Controllers
             return View("CreateView");
         }
 
+        //POST, for validation
         [HttpPost]
         [Route("create")]
         public async Task<IActionResult> Create(Subscription sub)
@@ -52,6 +54,46 @@ namespace AspSubscriptionTracker.Controllers
             }
           
             return RedirectToAction("Index"); 
+        }
+
+        [HttpGet]
+        [Route("edit/{subId}")]
+        public async Task<IActionResult> Edit([FromRoute]Guid? subId)
+        {
+            if (subId == null)
+                return BadRequest($"Subid is NULL");
+
+            Subscription requestedSub = await subService.FindAsync(subId);
+
+            if (requestedSub == null)
+                return BadRequest($"{subId} not found in database");
+
+            return View("EditView", requestedSub);
+        }
+
+        //POST, for validation
+        [HttpPost]
+        [Route("edit/{subId}")]
+        public IActionResult Edit(Guid subId, Subscription sub)
+        {
+            if (subId != sub.Id)
+                return BadRequest("ID no match");
+
+            if (!ModelState.IsValid)
+            {
+                return View("Editview", sub);
+            }
+
+            //Service Interaction
+            bool updated = subService.Update(sub);
+
+            if (!updated)
+            {
+                ModelState.AddModelError(string.Empty, $"Subscription already assocatiated with email {sub.Email}");
+                return View("EditView", sub);
+            }
+
+            return RedirectToAction("Index");
         }
 
         [Route("delete")]

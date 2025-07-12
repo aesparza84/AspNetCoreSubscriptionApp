@@ -1,24 +1,19 @@
 ﻿@model Subscription
 
 @{
-	ViewBag.Title = "Home Page";
+	ViewBag.Title = "Create Page";
 }
 
 <body>
-	<div class="container-md">
-		<h1>Add Subscription</h1>
-	</div>
-
-
 	<div class="container">
-		<div>
+		
 			<div class="col-md-6 justify-content-center">
 
 			<div class="col-md-6">
 				<a class="btn btn-primary" asp-controller="Home" asp-action="Index">Cancel</a>
 			</div>
 
-			<form asp-action="CreateSubscription" method="post">
+			<form asp-controller="Home" asp-action="Create" method="post">
 
 				<div asp-validation-summary="All" class="text-bg-danger">
 
@@ -75,7 +70,6 @@
 				<button type="reset">Clear</button>
 				<button type="submit">Submit</button>
 			</form>
-		</div>
 		</div>
 	</div>
 </body>

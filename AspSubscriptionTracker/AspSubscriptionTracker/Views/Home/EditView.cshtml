@@ -1,0 +1,76 @@
+﻿@model Subscription
+
+@{
+	ViewBag.Title = "Edit Page";
+}
+
+<body>
+	<div class="container">
+			<div class="col-md-6 justify-content-center">
+
+				<div class="col-md-6">
+					<a class="btn btn-primary" asp-controller="Home" asp-action="Index">Cancel</a>
+				</div>
+
+				<form asp-controller="Home" asp-action="Edit" method="post">
+					<input type="hidden" asp-for="Id" value="@Model.Id" />
+
+					<div asp-validation-summary="All" class="text-bg-danger">
+					</div>
+
+					<div class="mb-3">
+						<label class="form-label" asp-for="Name">Subscription Name:</label>
+						<input class="form-control" type="text" asp-for="Name" placeholder="Subscription Name" />
+						<span asp-validation-for="Name" />
+					</div>
+
+					<div class="mb-3">
+						<label class="form-label" asp-for="Price">Price:</label>
+						<input class="form-control" type="text" asp-for="Price" placeholder="Price" required />
+						<span asp-validation-for="Price" />
+					</div>
+
+					<div class="mb-3">
+						<label class="form-label" asp-for="Email">Email</label>
+						<input class="form-control" type="email" asp-for="Email" placeholder="email@Domain.com" required />
+						<span asp-validation-for="Email" />
+					</div>
+
+					<div class="mb-3">
+						<label class="form-label" asp-for="RenewalType">Renewal Type</label>
+
+						<select class="form-control" asp-for="RenewalType">
+							@foreach (RenewTypeEnum item in Enum.GetValues(typeof(RenewTypeEnum)))
+							{
+								<option value="@item" label="@item" />
+							}
+
+						</select>
+
+					</div>
+
+					<div class="mb-3">
+						<label class="form-label" asp-for="Category">Category</label>
+
+						<select class="form-select" asp-for="Category">
+							@foreach (CategoryTypeEnum item in Enum.GetValues(typeof(CategoryTypeEnum)))
+							{
+								<option value="@item" label="@item" />
+							}
+						</select>
+					</div>
+
+					<div class="mb-3">
+						<label class="form-label" asp-for="PurchaseDate">Purchase Date</label>
+						<input class="form-control" asp-for="PurchaseDate" type="date" required />
+						<span asp-validation-for="PurchaseDate" />
+					</div>
+
+					<div class="btn-group">
+						<button class="btn btn-primary" type="submit">Update</button>
+						<button class="btn btn-secondary" type="reset">Clear</button>
+					</div>
+				</form>
+			</div>
+	</div>
+</body>

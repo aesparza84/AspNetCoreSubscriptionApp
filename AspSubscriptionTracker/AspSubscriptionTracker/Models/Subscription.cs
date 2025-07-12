@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using AspSubscriptionTracker.Validations;
 namespace Models
 {
@@ -6,7 +7,9 @@ namespace Models
     {
         private const float maxPrice = 1000000;
 
-        public Guid Id { get; private set; }
+        
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public Guid Id { get; set; }
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "{0} can not be null or empty.")]
         [Display(Name = "Subscription Name")]
@@ -55,10 +58,7 @@ namespace Models
             }
         }
        
-        public DateTime NextRenewalDate {  get; private set; }
-        public Subscription() { Id = Guid.NewGuid(); }
-
-
+        public DateTime NextRenewalDate {  get; set; }
         public override string ToString()
         {
             return $"Name: {Name}\n" +
@@ -67,6 +67,22 @@ namespace Models
                 $"Catgory: {Category}\n" +
                 $"Renew Type: {RenewalType}\n" +
                 $"Renew Date: {PurchaseDate} \n";
+        }
+
+        public void SetNextRenewalDate()
+        {
+            switch (RenewalType)
+            {
+                case RenewTypeEnum.Monthly:
+                    NextRenewalDate = purchaseDate.AddMonths(1);
+                    break;
+                case RenewTypeEnum.Weekly:
+                    NextRenewalDate = purchaseDate.AddDays(7);
+                    break;
+                case RenewTypeEnum.Annual:
+                    NextRenewalDate = purchaseDate.AddYears(1);
+                    break;
+            }
         }
     }
 }
