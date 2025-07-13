@@ -24,11 +24,12 @@ namespace ServiceTests
                     new DbContextOptionsBuilder<ApplicationDbContext>().Options
                     );
 
+            ApplicationDbContext context = mockContext.Object;
 
             //Initial Data for DbSet
             var subscriptionList = new List<Subscription>() { };
             
-            ApplicationDbContext context = mockContext.Object;
+            //Create a Mock DbSet
             mockContext.CreateDbSetMock(m => m.Subscriptions, subscriptionList);
 
             subService = new SubscriptionService(context);

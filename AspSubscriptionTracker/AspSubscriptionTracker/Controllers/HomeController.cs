@@ -96,11 +96,15 @@ namespace AspSubscriptionTracker.Controllers
             return RedirectToAction("Index");
         }
 
-        [Route("delete")]
-        public IActionResult DeleteSubscription()
+        [HttpGet]
+        [Route("delete/{subId}")]
+        public IActionResult Delete(Guid subId, Subscription sub)
         {
+            if (subId != sub.Id)
+                return BadRequest("Id's don't match");
+
             //Nothing calls this yet
-            return View("DeleteView");
+            return View("DeleteView", sub);
         }
     }
 }

@@ -7,7 +7,6 @@
 <body class="container-md">
 	<div class="col-md-6">
 		<a class="btn btn-primary" asp-controller="Home" asp-action="Create">Create</a>
-		<a class="btn btn-secondary" asp-controller="Home" asp-action="Create">Delete</a>
 	</div>
 
 	<div id="sub-list-display">
@@ -40,7 +39,8 @@
 							<td>@String.Format("{0:MM/dd/yyyy}", sub.NextRenewalDate)</td>
 							<td>
 								<div class="btn-group">
-									<a asp-action="Edit" asp-route-subId="@sub.Id">Edit</a>
+									<a class="btn btn-light" asp-action="Edit" asp-route-subId="@sub.Id">Edit</a>
+									<a class="btn btn-secondary" asp-action="Delete" asp-route-subId="@sub.Id">Delete</a>
 								</div>
 							</td>
 						</tr>
