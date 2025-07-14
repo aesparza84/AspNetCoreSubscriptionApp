@@ -263,5 +263,30 @@ namespace ServiceTests
             //Assert
             Assert.False(updated);
         }
+
+        [Fact]
+        public async void SubscriptionDelete()
+        {
+            //Arrange
+            Subscription firstSub = new Subscription()
+            {
+                Name = "Test",
+                Price = 10,
+                Email = "test@gmail.com",
+                Category = CategoryTypeEnum.Streaming,
+                RenewalType = RenewTypeEnum.Monthly,
+                PurchaseDate = DateTime.Now
+            };
+
+            //Act
+            Guid trackingId = await subService.AddSubAsync(firstSub);
+
+            await subService.DeleteSub(trackingId);
+
+            Subscription findSub = await subService.FindAsync(trackingId);
+            
+            //Assert
+            Assert.Null(findSub);
+        }
     }
 }

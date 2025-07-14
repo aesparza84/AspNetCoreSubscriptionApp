@@ -32,11 +32,28 @@ namespace AspSubscriptionTracker.Services.Contracts
             return sub.Id;
         }
 
+
         public async Task<Subscription>? FindAsync(Guid? id)
         {
             int count = subContext.Subscriptions.Count();
 
-            return await subContext.Subscriptions.FirstOrDefaultAsync(sub => sub.Id == id);
+            try
+            {
+                return await subContext.Subscriptions.FirstOrDefaultAsync(sub => sub.Id == id);
+            }
+            catch (Exception e)
+            {
+
+                return null;
+            }
+        }
+        public async Task DeleteSub(Guid trackingId)
+        {
+            Subscription targetSub = await FindAsync(trackingId);
+            
+            subContext.Subscriptions.Remove(targetSub);
+
+            await subContext.SaveChangesAsync();
         }
 
         public bool Update(Subscription sub)

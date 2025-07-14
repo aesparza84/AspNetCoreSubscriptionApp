@@ -47,7 +47,7 @@ namespace AspSubscriptionTracker.Controllers
             //Service Interaction
             Guid addedId = await subService.AddSubAsync(sub);
             
-            if (addedId != Guid.Empty)
+            if (addedId == Guid.Empty)
             {
                 ModelState.AddModelError(string.Empty, $"Subscription already assocatiated with email {sub.Email}");
                 return View("CreateView", sub);
@@ -98,13 +98,22 @@ namespace AspSubscriptionTracker.Controllers
 
         [HttpGet]
         [Route("delete/{subId}")]
-        public IActionResult Delete(Guid subId, Subscription sub)
+        public async Task<IActionResult> Delete(Guid subId)
         {
-            if (subId != sub.Id)
-                return BadRequest("Id's don't match");
+            Subscription sub = await subService.FindAsync(subId);
 
             //Nothing calls this yet
             return View("DeleteView", sub);
         }
-    }
+
+		[HttpPost]
+		[Route("delete/{subId}")]
+		public async Task<IActionResult> Delete(Subscription sub)
+		{
+			await subService.DeleteSub(sub.Id);
+
+			//Nothing calls this yet
+			return RedirectToAction("Index");
+		}
+	}
 }
