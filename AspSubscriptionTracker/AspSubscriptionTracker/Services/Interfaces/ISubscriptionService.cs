@@ -7,7 +7,7 @@ namespace AspSubscriptionTracker.Services.Interfaces
         public Task<Guid> AddSubAsync(Subscription sub);
         public Task<List<Subscription>>? ViewAllAsync();
         public Task<Subscription>? FindAsync(Guid? id);
-        public bool Update(Subscription sub);
+        public Task<bool> Update(Subscription sub);
         public Task DeleteSub(Guid trackingId);
     }
 }

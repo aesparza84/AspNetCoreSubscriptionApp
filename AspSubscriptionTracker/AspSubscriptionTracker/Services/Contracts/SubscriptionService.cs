@@ -1,4 +1,5 @@
 ﻿using AspSubscriptionTracker.Models;
+using AspSubscriptionTracker.Repository;
 using AspSubscriptionTracker.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Models;
@@ -7,25 +8,24 @@ namespace AspSubscriptionTracker.Services.Contracts
 {
     public class SubscriptionService : ISubscriptionService
     {
-        private readonly ApplicationDbContext subContext;
+        private readonly ISubcriptionRepository repository;
 
-        public SubscriptionService(ApplicationDbContext ctx)
+        public SubscriptionService(ISubcriptionRepository subRepo)
         {
-            subContext = ctx;
+            repository = subRepo;
         }
         public async Task<Guid> AddSubAsync(Subscription sub)
         {
-            List<Subscription> subList = subContext.Subscriptions.ToList();
-            
+            //Repository here
+            List<Subscription> subList = await repository.GetAllSubscriptions();
             if (subList.Any(e => e.Name == sub.Name && e.Email == sub.Email))
             {
                 Console.WriteLine("This subscription exists on this email");
                 return Guid.Empty;
             }
 
-            //await subContext.AddAsync(sub);
-            await subContext.Subscriptions.AddAsync(sub);
-            await subContext.SaveChangesAsync();
+            //Repository here
+            await repository.Create(sub);
 
 
             Console.WriteLine("Sub is valid, Added");
@@ -35,37 +35,33 @@ namespace AspSubscriptionTracker.Services.Contracts
 
         public async Task<Subscription>? FindAsync(Guid? id)
         {
-            int count = subContext.Subscriptions.Count();
-
             try
             {
-                return await subContext.Subscriptions.FirstOrDefaultAsync(sub => sub.Id == id);
+                //Repository here
+                List<Subscription> subList = await repository.GetAllSubscriptions();
+
+                return subList.FirstOrDefault(sub => sub.Id == id);
             }
             catch (Exception e)
             {
-
                 return null;
             }
         }
         public async Task DeleteSub(Guid trackingId)
         {
-            Subscription targetSub = await FindAsync(trackingId);
-            
-            subContext.Subscriptions.Remove(targetSub);
-
-            await subContext.SaveChangesAsync();
+            await repository.Delete(trackingId);
         }
 
-        public bool Update(Subscription sub)
+        public async Task<bool> Update(Subscription sub)
         {   
-            //Grab the element we are updating
-            var dbSub = subContext.Subscriptions.FirstOrDefault(d => d.Id == sub.Id);
+            List<Subscription> subList = await repository.GetAllSubscriptions();
 
-            //Email Changed
+            var dbSub = subList.FirstOrDefault(d => d.Id == sub.Id);
+
             if (sub.Email != dbSub.Email)
             {
                 //Confirm that email doesn't belong to same subscription name
-                if (subContext.Subscriptions.Any(e => e.Email == sub.Email && e.Name == sub.Name))
+                if (subList.Any(e => e.Email == sub.Email && e.Name == sub.Name))
                     return false;
             }
 
@@ -90,15 +86,16 @@ namespace AspSubscriptionTracker.Services.Contracts
                 dbSub.SetNextRenewalDate();
             }
              
-            //subContext.Entry(dbSub).State = EntityState.Modified;
-            subContext.Subscriptions.Update(dbSub);
-            subContext.SaveChanges();
+            //Repository here
+            repository.Update(dbSub);
+
             return true;
         }
 
         public async Task<List<Subscription>>? ViewAllAsync()
         {
-            List<Subscription> list = await subContext.Subscriptions.ToListAsync();
+            //Repository here
+            List<Subscription> list = await repository.GetAllSubscriptions();
 
             return list;
         }

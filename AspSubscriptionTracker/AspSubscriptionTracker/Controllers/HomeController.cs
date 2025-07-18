@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using AspSubscriptionTracker.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using Models;
 
 namespace AspSubscriptionTracker.Controllers
@@ -8,22 +9,36 @@ namespace AspSubscriptionTracker.Controllers
     public class HomeController : Controller
     {
         private readonly ISubscriptionService subService;
+        private readonly IMemoryCache memoryCache;
 
-        public HomeController(ISubscriptionService sub)
+        private const string cacheKey = "allSubscriptionsKey";
+        public HomeController(ISubscriptionService sub, IMemoryCache cache)
         {
             subService = sub;
+            memoryCache = cache;
         }
 
         [HttpGet]
         [Route("/")]
         public async Task<IActionResult> Index()
         {
-            List<Subscription> list = await subService.ViewAllAsync();
-            
-            if (list != null)
-                return View(list);
+            if (memoryCache.TryGetValue(cacheKey, out List<Subscription> subList))
+            {
+                return View(subList);
+            }
+            else
+            {
+                subList = await subService.ViewAllAsync();
+
+                var options = new MemoryCacheEntryOptions()
+                    .SetSlidingExpiration(TimeSpan.FromSeconds(45))
+                    .SetAbsoluteExpiration(TimeSpan.FromSeconds(3600))
+                    .SetPriority(CacheItemPriority.Normal);
+
+                memoryCache.Set(cacheKey, subList, options);
+            }
                 
-            return View();
+            return View(subList);
         }
 
         //GET, entering the page
@@ -74,7 +89,7 @@ namespace AspSubscriptionTracker.Controllers
         //POST, for validation
         [HttpPost]
         [Route("edit/{subId}")]
-        public IActionResult Edit(Guid subId, Subscription sub)
+        public async Task<IActionResult> Edit(Guid subId, Subscription sub)
         {
             if (subId != sub.Id)
                 return BadRequest("ID no match");
@@ -85,7 +100,7 @@ namespace AspSubscriptionTracker.Controllers
             }
 
             //Service Interaction
-            bool updated = subService.Update(sub);
+            bool updated = await subService.Update(sub);
 
             if (!updated)
             {

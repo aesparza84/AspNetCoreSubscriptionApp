@@ -3,6 +3,7 @@ using AspSubscriptionTracker.Services.Contracts;
 using AspSubscriptionTracker.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using AspSubscriptionTracker.Repository;
 
 namespace AspSubscriptionTracker
 {
@@ -14,9 +15,11 @@ namespace AspSubscriptionTracker
             
             //Add Controllers
             builder.Services.AddControllersWithViews();
+            builder.Services.AddMemoryCache();
 
-            //Add injection
+            //Add injections
             builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();
+            builder.Services.AddScoped<ISubcriptionRepository, SubscriptionRepository>();
 
             //Add the dbContext
             builder.Services.AddDbContext<ApplicationDbContext>(options => 

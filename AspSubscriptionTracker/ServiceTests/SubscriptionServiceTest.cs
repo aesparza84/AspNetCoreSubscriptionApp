@@ -1,4 +1,5 @@
 using AspSubscriptionTracker.Models;
+using AspSubscriptionTracker.Repository;
 using AspSubscriptionTracker.Services;
 using AspSubscriptionTracker.Services.Contracts;
 using AspSubscriptionTracker.Services.Interfaces;
@@ -15,6 +16,7 @@ namespace ServiceTests
         //https://stackoverflow.com/questions/54219742/mocking-ef-core-dbcontext-and-dbset
 
         private readonly ISubscriptionService subService;
+        private readonly ISubcriptionRepository repository;
         public SubscriptionServiceTest()
         {            
             
@@ -32,7 +34,8 @@ namespace ServiceTests
             //Create a Mock DbSet
             mockContext.CreateDbSetMock(m => m.Subscriptions, subscriptionList);
 
-            subService = new SubscriptionService(context);
+            repository = new SubscriptionRepository(mockContext.Object);
+            subService = new SubscriptionService(repository);
         }
 
 
@@ -166,7 +169,7 @@ namespace ServiceTests
                 PurchaseDate = DateTime.Now
             };
 
-            bool updated = subService.Update(incomingSub);
+            bool updated = await subService.Update(incomingSub);
 
             //Assert
             Assert.True(updated);
@@ -212,7 +215,7 @@ namespace ServiceTests
                 PurchaseDate = DateTime.Now
             };
 
-            bool updated = subService.Update(incomingSub);
+            bool updated = await subService.Update(incomingSub);
 
             //Assert
             Assert.True(updated);
@@ -258,7 +261,7 @@ namespace ServiceTests
                 PurchaseDate = DateTime.Now
             };
 
-            bool updated = subService.Update(incomingSub);
+            bool updated = await subService.Update(incomingSub);
 
             //Assert
             Assert.False(updated);
