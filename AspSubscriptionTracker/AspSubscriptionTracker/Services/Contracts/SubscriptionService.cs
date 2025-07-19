@@ -79,6 +79,9 @@ namespace AspSubscriptionTracker.Services.Contracts
            
             if (dbSub.PurchaseDate != sub.PurchaseDate)
                 dbSub.PurchaseDate = sub.PurchaseDate;
+
+            if (dbSub.Price != sub.Price)
+                dbSub.Price = sub.Price;
             
             if (dbSub.RenewalType != sub.RenewalType)
             {
