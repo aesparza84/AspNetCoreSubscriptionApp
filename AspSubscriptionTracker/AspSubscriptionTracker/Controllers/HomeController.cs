@@ -59,7 +59,6 @@ namespace AspSubscriptionTracker.Controllers
                 return View("CreateView", sub);
             }
 
-            //Service Interaction
             Guid addedId = await subService.AddSubAsync(sub);
             
             if (addedId == Guid.Empty)
@@ -68,6 +67,7 @@ namespace AspSubscriptionTracker.Controllers
                 return View("CreateView", sub);
             }
           
+            memoryCache.Remove(cacheKey);   
             return RedirectToAction("Index"); 
         }
 
@@ -108,6 +108,7 @@ namespace AspSubscriptionTracker.Controllers
                 return View("EditView", sub);
             }
 
+            memoryCache.Remove(cacheKey);   
             return RedirectToAction("Index");
         }
 
@@ -127,8 +128,9 @@ namespace AspSubscriptionTracker.Controllers
 		{
 			await subService.DeleteSub(sub.Id);
 
-			//Nothing calls this yet
-			return RedirectToAction("Index");
+            //Nothing calls this yet
+            memoryCache.Remove(cacheKey);
+            return RedirectToAction("Index");
 		}
 	}
 }
