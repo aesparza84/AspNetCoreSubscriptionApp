@@ -14,7 +14,7 @@ namespace Models
         [Required(AllowEmptyStrings = false, ErrorMessage = "{0} can not be null or empty.")]
         [Display(Name = "Subscription Name")]
         [StringLength(30, MinimumLength = 3, ErrorMessage = "Name must be between 3-30 characters")]
-        [RegularExpression("^[A-Za-z]+$", ErrorMessage = "Name can only be letters")]
+        [RegularExpression("^[A-Za-z ]+$", ErrorMessage = "Name can only be letters")]
         public string Name { get; set; }
 
         [Required(ErrorMessage = "{0} can not be empty")]
