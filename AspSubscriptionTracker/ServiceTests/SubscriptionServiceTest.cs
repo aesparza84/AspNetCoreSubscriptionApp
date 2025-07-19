@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Models;
 using EntityFrameworkCoreMock;
 using Moq;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace ServiceTests
 {
@@ -16,7 +17,8 @@ namespace ServiceTests
         //https://stackoverflow.com/questions/54219742/mocking-ef-core-dbcontext-and-dbset
 
         private readonly ISubscriptionService subService;
-        private readonly ISubcriptionRepository repository;
+
+        private readonly ISubcriptionRepository repo;
         public SubscriptionServiceTest()
         {            
             
@@ -34,13 +36,13 @@ namespace ServiceTests
             //Create a Mock DbSet
             mockContext.CreateDbSetMock(m => m.Subscriptions, subscriptionList);
 
-            repository = new SubscriptionRepository(mockContext.Object);
-            subService = new SubscriptionService(repository);
+            repo = new SubscriptionRepository(context);
+            subService = new SubscriptionService(repo);
         }
 
 
         [Fact]
-        public async Task AddSubscription_SuccessfullAdd()
+        public async Task AddSubscription_ProperDetails_Success()
         {
             //Arrange                  
             Subscription testSub = new Subscription() 

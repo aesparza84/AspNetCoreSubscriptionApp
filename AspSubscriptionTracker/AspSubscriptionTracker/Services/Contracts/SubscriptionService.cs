@@ -25,11 +25,11 @@ namespace AspSubscriptionTracker.Services.Contracts
             }
 
             //Repository here
-            await repository.Create(sub);
+            Guid id = await repository.Create(sub);
 
 
             Console.WriteLine("Sub is valid, Added");
-            return sub.Id;
+            return id;
         }
 
 
